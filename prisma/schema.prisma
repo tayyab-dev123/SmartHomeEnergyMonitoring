@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  role      String   @default("user")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  devices   Device[]
+  queries   Query[]
+}
+
+model Device {
+  id          String      @id @default(cuid())
+  name        String
+  type        String
+  userId      String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  
+  user        User        @relation(fields: [userId], references: [id])
+  telemetry   Telemetry[]
+  
+  @@index([userId])
+}
+
+model Telemetry {
+  id          String   @id @default(cuid())
+  deviceId    String
+  timestamp   DateTime @default(now())
+  energyWatts Float
+  
+  device      Device   @relation(fields: [deviceId], references: [id])
+  
+  @@index([deviceId, timestamp])
+}
+
+model Query {
+  id        String   @id @default(cuid())
+  userId    String
+  question  String
+  response  Json
+  createdAt DateTime @default(now())
+  
+  user      User     @relation(fields: [userId], references: [id])
+  
+  @@index([userId])
+}
