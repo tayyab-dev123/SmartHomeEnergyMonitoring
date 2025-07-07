@@ -202,3 +202,8 @@ This project is licensed under the MIT License.
 ## Support
 
 For support, email tayyab.shahzad10@yahoo.com or create an issue in the repository.
+
+---
+
+**Note:**
+Currently, the application uses static/demo data for device telemetry and energy usage. However, it is designed to be easily extendable and can be connected to real smart home devices or IoT data sources with minimal changes.
